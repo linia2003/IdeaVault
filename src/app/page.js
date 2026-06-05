@@ -1,21 +1,32 @@
 import React from "react";
 import Link from "next/link";
 import Banner from "./components/banner";
-import { Lightbulb, MessageSquare, Tag, LayoutGrid, CheckCircle, Code, Briefcase, HeartHandshake } from "lucide-react";
+import { Lightbulb, MessageSquare, Tag, LayoutGrid, CheckCircle, Code, Briefcase } from "lucide-react";
 
 
-const mockTrending = [
-  { _id: "1", title: "EduTrack - Realtime Bus Mapping for Schools", category: "Education", budget: "$1,200", comments: 14, text: "A dynamic mobile tracking interface that lets parents see live student transportation runs safely." },
-  { _id: "2", title: "MediRemind - Smart Automated Capsule Vial", category: "Health", budget: "$3,500", comments: 11, text: "An IoT integrated pill dispenser lid that notifications sync with household patient phones directly." },
-  { _id: "3", title: "AgroPulse - Soil Crop Diagnostic Scanner", category: "AI Systems", budget: "$800", comments: 9, text: "Using lightweight predictive algorithms to verify agricultural moisture and nitrogen profiles locally." },
-  { _id: "4", title: "EcoSort - Community Recyclable Bin Sort", category: "Environment", budget: "$1,500", comments: 8, text: "A reward scanning app mechanism incentivizing regional municipal sorting stations organically." },
-  { _id: "5", title: "FinFlow - Micro Finance Savings Vault", category: "Finance", budget: "$2,000", comments: 7, text: "A split pocket tracker allowing low-income merchants to lock down collaborative rotating deposits." },
-  { _id: "6", title: "CodeBuddy - Collaborative Pair Board", category: "Tech", budget: "$600", comments: 6, text: "A real-time lightweight code canvas platform targeting isolated remote regional student squads." }
-];
+async function getTrendingIdeas() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/ideas/trending`, {
+      cache: "no-store", 
+    });
+    
+    if (!res.ok) {
+      return [];
+    }
+    
+    return await res.json();
+  } catch (error) {
+    console.error("Failed to fetch trending ideas from server context:", error);
+    return [];
+  }
+}
 
-export default function HomePage() {
+export default async function HomePage() {
+  const trendingIdeas = await getTrendingIdeas();
+
   return (
     <div className="w-full py-2">
+      
      
       <Banner />
 
@@ -44,7 +55,7 @@ export default function HomePage() {
         </div>
       </section>
 
-    
+      
       <section className="mb-20">
         <div className="flex items-center justify-between gap-4 mb-10">
           <div>
@@ -56,53 +67,60 @@ export default function HomePage() {
           </Link>
         </div>
 
-      
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {mockTrending.map((item) => (
-            <div 
-              key={item._id} 
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col justify-between transition-all hover:shadow-lg hover:-translate-y-0.5 group"
-            >
-              <div>
-              
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-xs font-semibold">
-                    <Tag size={12} className="text-blue-500" />
-                    {item.category}
-                  </span>
-                  <span className="text-xs font-mono text-zinc-400">
-                    Est. Budget: <span className="text-zinc-700 dark:text-zinc-200 font-bold">{item.budget}</span>
-                  </span>
+        {trendingIdeas.length === 0 ? (
+          <div className="w-full text-center py-12 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-900">
+            <Lightbulb className="w-8 h-8 text-zinc-300 mx-auto mb-2" />
+            <p className="text-sm text-zinc-500 font-medium">No trending startup ideas found in the database yet.</p>
+            <p className="text-xs text-zinc-400 mt-1">They will populate right here as soon as documents are added to MongoDB!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {trendingIdeas.map((item) => (
+              <div 
+                key={item._id.toString()} 
+                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col justify-between transition-all hover:shadow-lg hover:-translate-y-0.5 group"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-xs font-semibold">
+                      <Tag size={12} className="text-blue-500" />
+                      {item.category}
+                    </span>
+                    {item.estimatedBudget && (
+                      <span className="text-xs font-mono text-zinc-400">
+                        Est. Budget: <span className="text-zinc-700 dark:text-zinc-200 font-bold">${item.estimatedBudget}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-bold text-lg text-zinc-900 dark:text-white mb-2 tracking-tight line-clamp-1 group-hover:text-blue-600 transition-colors">
+                    {item.ideaTitle || item.title}
+                  </h3>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed mb-6 line-clamp-3">
+                    {item.shortDescription || item.description}
+                  </p>
                 </div>
 
-          
-                <h3 className="font-bold text-lg text-zinc-900 dark:text-white mb-2 tracking-tight line-clamp-1 group-hover:text-blue-600 transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed mb-6 line-clamp-3">
-                  {item.text}
-                </p>
+                <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5 text-xs text-zinc-400">
+                    <MessageSquare size={14} className="text-zinc-400" />
+                    <span>{item.commentCount || 0} Feedbacks</span>
+                  </span>
+                  
+                  <Link 
+                    href={`/ideas/${item._id.toString()}`}
+                    className="inline-flex items-center justify-center bg-zinc-100 hover:bg-blue-600 dark:bg-zinc-800 dark:hover:bg-blue-600 text-zinc-700 dark:text-zinc-300 hover:text-white dark:hover:text-white text-xs font-bold px-4 h-9 rounded-xl transition-all active:scale-95"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
-
-              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-                <span className="flex items-center gap-1.5 text-xs text-zinc-400">
-                  <MessageSquare size={14} className="text-zinc-400" />
-                  <span>{item.comments} Feedbacks</span>
-                </span>
-                
-                <Link 
-                  href={`/ideas/${item._id}`}
-                  className="inline-flex items-center justify-center bg-zinc-100 hover:bg-blue-600 dark:bg-zinc-800 dark:hover:bg-blue-600 text-zinc-700 dark:text-zinc-300 hover:text-white dark:hover:text-white text-xs font-bold px-4 h-9 rounded-xl transition-all active:scale-95"
-                >
-                  View Details
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      
+     
       <section className="mb-8">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-10 -translate-y-10 pointer-events-none">
