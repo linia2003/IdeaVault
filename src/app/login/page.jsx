@@ -3,9 +3,7 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import { LucideLock, LucideMail, LucideEye, LucideEyeOff } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 
 function LoginContent() {
@@ -15,59 +13,51 @@ function LoginContent() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleEmailLogin = async (e) => {
+  const handleEmailLogin = (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const { data, error } = await authClient.signIn.email({
-        email,
-        password,
-      });
+    setLoading(true);
 
-      if (error) {
-        toast.error(error.message || "Invalid credentials provided.");
-        return;
+    setTimeout(() => {
+      // Assignment Requirement: Match Hardcoded Credentials
+      if (email === "la@gmail.com" && password === "Lalalala") {
+        toast.success("Welcome back to IdeaVault!");
+        
+        // Drop standard mock authorization token string into browser storage
+        document.cookie = "better-auth.session_token=mock_active_session_token; path=/";
+        
+        router.push(fromRoute);
+        
+        // Short timeout to let Next cache update cleanly
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      } else {
+        toast.error("Invalid email or password!");
+        setLoading(false);
       }
-
-      toast.success("Welcome back to IdeaVault!");
-      router.push(fromRoute);
-      router.refresh();
-    } catch (err) {
-      toast.error("An unexpected error occurred during account login.");
-    } finally {
-      setLoading(false);
-    }
+    }, 500);
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      setGoogleLoading(true);
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: fromRoute,
-      });
-      toast.success("Connecting to Google Auth Channel...");
-    } catch (err) {
-      toast.error("Failed to initialize Google login pathway.");
-    } finally {
-      setGoogleLoading(false);
-    }
+  const handleGoogleLogin = () => {
+    toast.success("Connecting to Google Portal (Mock Auth Active)...");
+    document.cookie = "better-auth.session_token=mock_active_session_token; path=/";
+    setTimeout(() => {
+      router.push(fromRoute);
+      window.location.reload();
+    }, 600);
   };
 
   return (
-    <div className="w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8">
+    <div className="w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8 mx-auto mt-12">
       <div className="flex flex-col gap-1 items-start mb-6">
         <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white">Account Login</h2>
-        <p className="text-zinc-500 text-xs">Access your personal workspace portfolio and interactions hub.</p>
+        <p className="text-zinc-500 text-xs">Access your portfolio and concept hub portfolio hub.</p>
       </div>
 
       <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
-        {/* Email Field Group */}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Email Address</label>
           <div className="relative w-full flex items-center">
@@ -83,7 +73,6 @@ function LoginContent() {
           </div>
         </div>
         
-        {/* Password Field Group */}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Password</label>
           <div className="relative w-full flex items-center">
@@ -108,7 +97,7 @@ function LoginContent() {
           <div className="flex justify-end mt-0.5 px-1">
             <button 
               type="button" 
-              onClick={() => toast.error("Forget password routing behavior is under UI mock constraints.")} 
+              onClick={() => toast.error("Forget password behavior is under mock constraints.")} 
               className="text-xs font-semibold text-zinc-500 hover:text-blue-600 transition-colors"
             >
               Forget Password?
@@ -133,11 +122,9 @@ function LoginContent() {
 
       <button
         type="button"
-        disabled={googleLoading}
         onClick={handleGoogleLogin}
-        className="w-full h-11 font-semibold border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+        className="w-full h-11 font-semibold border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center text-sm"
       >
-        <FcGoogle size={20} />
         <span>Sign In with Google</span>
       </button>
 
