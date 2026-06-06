@@ -1,9 +1,17 @@
 import { betterAuth } from "better-auth";
+import { MongoClient } from "mongodb";
+import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { jwt } from "better-auth/plugins";
 
+// Setup single cached driver reference context to bypass compilation leaks
+const client = new MongoClient(process.env.MONGODB_URI || "");
+const db = client.db("ideavault");
+
 export const auth = betterAuth({
-  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-  emailAndPassword: { enabled: true },
+  database: mongodbAdapter(db, { client }),
+  emailAndPassword: { 
+    enabled: true 
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || "placeholder",
