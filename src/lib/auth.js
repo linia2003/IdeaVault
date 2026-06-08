@@ -1,27 +1,31 @@
-import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
-import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { betterAuth } from "better-auth";
 import { jwt } from "better-auth/plugins";
+import { mongodbAdapter } from "better-auth/adapters/mongodb"; // Core architectural fix
 
-const client = new MongoClient(process.env.MONGODB_URI);
+const dbUri = process.env.MONGODB_URI;
+const authSecret = process.env.BETTER_AUTH_SECRET;
+
+if (!dbUri) {
+  throw new Error("MONGODB_URI is missing from execution environmental frame.");
+}
+
+const client = new MongoClient(dbUri);
 const db = client.db("ideavault");
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, { client }),
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
-  emailAndPassword: { enabled: true },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENTID,
-      clientSecret: process.env.GOOGLE_SECRET,
-    },
-  },
-  session: {
-    cookieCache: {
-      enabled: true,
-      strategy: "jwt",
-      maxAge: 7 * 24 * 60 * 60,
-    },
+  
+  database: mongodbAdapter(db), 
+  secret: authSecret,
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: false
   },
   plugins: [jwt()],
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+    }
+  }
 });

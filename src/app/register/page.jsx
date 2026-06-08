@@ -11,6 +11,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Clean states for direct component tracking
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
@@ -18,41 +20,60 @@ export default function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (password.length < 6) { toast.error("Password must be at least 6 characters!"); return; }
-    if (!/[A-Z]/.test(password)) { toast.error("Password needs an uppercase letter!"); return; }
-    if (!/[a-z]/.test(password)) { toast.error("Password needs a lowercase letter!"); return; }
+
+    // Enforcing assignment parameters precisely before striking the authClient
+    if (password.length < 6) { 
+      toast.error("Password standard unmet: Minimum 6 characters required."); 
+      return; 
+    }
+    if (!/[A-Z]/.test(password)) { 
+      toast.error("Security policy warning: Include at least one uppercase character."); 
+      return; 
+    }
+    if (!/[a-z]/.test(password)) { 
+      toast.error("Security policy warning: Include at least one lowercase character."); 
+      return; 
+    }
 
     try {
       setLoading(true);
       const { data, error } = await authClient.signUp.email({
-        email,
-        password,
-        name,
-        image: photoUrl || undefined,
+        email: email.trim(),
+        password: password,
+        name: name.trim(),
+        image: photoUrl.trim() || undefined,
       });
+
       if (error) {
-        toast.error(error.message || "Registration failed!");
+        toast.error(error.message || "Registration failed. Verify your input parameters.");
         return;
       }
-      toast.success("Account created successfully!");
+
+      toast.success("Identity profile authorized successfully! Please sign in.");
       router.push("/login");
-      router.refresh();
     } catch (err) {
-      toast.error("Something went wrong during registration.");
+      console.error("Auth tracking malfunction:", err);
+      toast.error("Encountered an internal handshake issue. Try again shortly.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-12rem)] flex items-center justify-center py-6">
-      <div className="w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8">
+    <div className="w-full min-h-[calc(100vh-12rem)] flex items-center justify-center py-8 px-4 bg-[#fafafa] dark:bg-[#0f0f11] transition-colors duration-200">
+      <div className="w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-md bg-white dark:bg-zinc-900 rounded-2xl p-8">
+        
         <div className="flex flex-col gap-1 items-start mb-6">
-          <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white">Create an Account</h2>
-          <p className="text-zinc-500 text-xs">Join IdeaVault to track and validate startup concepts.</p>
+          <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white">
+            Create an Account
+          </h2>
+          <p className="text-zinc-500 dark:text-zinc-400 text-xs">
+            Join IdeaVault to track, collaborate, and validate startup concepts.
+          </p>
         </div>
 
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
+          
           {/* Full Name */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Full Name</label>
@@ -61,10 +82,10 @@ export default function RegisterPage() {
               <input
                 type="text"
                 required
-                placeholder="Enter your name"
+                placeholder="Mahbuba Rahman"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors"
+                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-zinc-900 dark:text-white transition-all"
               />
             </div>
           </div>
@@ -77,10 +98,10 @@ export default function RegisterPage() {
               <input
                 type="email"
                 required
-                placeholder="name@example.com"
+                placeholder="name@domain.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors"
+                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-zinc-900 dark:text-white transition-all"
               />
             </div>
           </div>
@@ -93,10 +114,10 @@ export default function RegisterPage() {
               <input
                 type="url"
                 required
-                placeholder="Photo link URL"
+                placeholder="https://images.unsplash.com/...image.jpg"
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors"
+                className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-zinc-900 dark:text-white transition-all"
               />
             </div>
           </div>
@@ -112,14 +133,14 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-11 pl-11 pr-12 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors"
+                className="w-full h-11 pl-11 pr-12 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-zinc-900 dark:text-white transition-all"
               />
               <button 
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)} 
-                className="absolute right-4 text-zinc-400 hover:text-zinc-600 focus:outline-none"
+                className="absolute right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 focus:outline-none cursor-pointer"
               >
-                {showPassword ? <LucideEyeOff size={18} /> : <LucideEye size={18} />}
+                {showPassword ? <LucideEyeOff size={16} /> : <LucideEye size={16} />}
               </button>
             </div>
           </div>
@@ -127,15 +148,17 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-11 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl mt-2 shadow-lg shadow-blue-600/10 transition-colors flex items-center justify-center text-sm disabled:opacity-50"
+            className="w-full h-11 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl mt-3 shadow-sm transition-colors flex items-center justify-center text-sm disabled:opacity-50 cursor-pointer"
           >
-            {loading ? "Creating Account..." : "Sign Up"}
+            {loading ? "Constructing Identity Record..." : "Authorize Registration"}
           </button>
         </form>
 
-        <p className="text-center text-xs text-zinc-500 mt-6">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 font-bold hover:underline">Login here</Link>
+        <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-6">
+          Already registered inside the vault?{" "}
+          <Link href="/login" className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
+            Login here
+          </Link>
         </p>
       </div>
     </div>
