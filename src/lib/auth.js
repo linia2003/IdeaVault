@@ -3,11 +3,7 @@ import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { jwt } from "better-auth/plugins";
 
-// Clean unified shard reference completely isolates lookups from DNS blocks
-const directShardUri = "mongodb://munaUser:munaSecure2026@cluster0-shard-00-00.lazrpvl.mongodb.net:27017,cluster0-shard-00-01.lazrpvl.mongodb.net:27017,cluster0-shard-00-02.lazrpvl.mongodb.net:27017/ideavault?ssl=true&replicaSet=atlas-lazrpvl-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0";
-const uri = process.env.MONGODB_URI || directShardUri;
-
-const client = new MongoClient(uri);
+const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db("ideavault");
 
 export const auth = betterAuth({
@@ -16,7 +12,6 @@ export const auth = betterAuth({
   emailAndPassword: { enabled: true },
   socialProviders: {
     google: {
-      // Stripped clean of hardcoded values to satisfy GitHub Push Protection rules
       clientId: process.env.GOOGLE_CLIENTID,
       clientSecret: process.env.GOOGLE_SECRET,
     },

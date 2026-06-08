@@ -9,13 +9,16 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+node_modules/
 
 # testing
 /coverage
 
-# next.js
+# next.js and cache builds
 /.next/
 /out/
+build-cache-vault/
+build-cache-vault-v2/
 
 # production
 /build
@@ -30,7 +33,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (Restricted from version control tracking)
+.env
+.env.local
+.env.production
 .env*
 
 # vercel

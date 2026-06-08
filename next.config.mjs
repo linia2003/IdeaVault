@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   serverExternalPackages: ["mongodb"],
-  // Moves the build cache to a clean, unlocked folder inside your project root
-  distDir: "build-cache-vault",
+  
+  distDir: "build-cache-vault-v2",
 };
 
 export default nextConfig;
