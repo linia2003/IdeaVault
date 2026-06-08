@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import { LucideLock, LucideMail, LucideUser, LucideImage, LucideEye, LucideEyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -10,35 +11,37 @@ export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=387&auto=format&fit=crop");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    
-    // Assignment Requirement: Strict Password Validations
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long!");
-      return;
-    }
-    if (!/[A-Z]/.test(password)) {
-      toast.error("Password must contain at least one uppercase letter!");
-      return;
-    }
-    if (!/[a-z]/.test(password)) {
-      toast.error("Password must contain at least one lowercase letter!");
-      return;
-    }
+    if (password.length < 6) { toast.error("Password must be at least 6 characters!"); return; }
+    if (!/[A-Z]/.test(password)) { toast.error("Password needs an uppercase letter!"); return; }
+    if (!/[a-z]/.test(password)) { toast.error("Password needs a lowercase letter!"); return; }
 
-    setLoading(true);
-
-    setTimeout(() => {
+    try {
+      setLoading(true);
+      const { data, error } = await authClient.signUp.email({
+        email,
+        password,
+        name,
+        image: photoUrl || undefined,
+      });
+      if (error) {
+        toast.error(error.message || "Registration failed!");
+        return;
+      }
       toast.success("Account created successfully!");
       router.push("/login");
-    }, 600);
+      router.refresh();
+    } catch (err) {
+      toast.error("Something went wrong during registration.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

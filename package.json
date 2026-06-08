@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
+  "dev": "next dev --turbo",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint"
+},
   "dependencies": {
     "@heroui/react": "^3.1.0",
     "@heroui/styles": "^3.1.0",
-    "better-auth": "1.2.7",
+    "better-auth": "^1.6.10",
     "lucide-react": "^1.17.0",
     "mongodb": "^7.2.0",
     "next": "16.2.7",

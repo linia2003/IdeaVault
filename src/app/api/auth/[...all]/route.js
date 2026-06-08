@@ -1,10 +1,4 @@
-import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { toNextJsHandler } from "better-auth/next-js";
 
-
-export async function GET(request) {
-  return NextResponse.json({ status: "mock_auth_mode_active", user: null });
-}
-
-export async function POST(request) {
-  return NextResponse.json({ status: "mock_auth_mode_active", user: null });
-}
+export const { POST, GET } = toNextJsHandler(auth);

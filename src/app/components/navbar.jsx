@@ -2,89 +2,86 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { Lightbulb, LogOut, Menu, User, PlusCircle, Folder, MessageSquare } from "lucide-react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, Button } from "@heroui/react";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
+  const router = useRouter();
+  
+  // Real reactive session hook from the blueprint pattern
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
   const handleSignOut = async () => {
-    await authClient.signOut();
+    try {
+      await authClient.signOut();
+      toast.success("Logged out safely.");
+      router.push("/login");
+      router.refresh();
+    } catch (error) {
+      toast.error("Failed to complete signout.");
+    }
   };
 
   return (
-    <nav className="w-full bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
-      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+    <nav className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 backdrop-blur-md sticky top-0 z-50">
+      <div className="container mx-auto max-w-7xl h-16 px-6 flex items-center justify-between">
         
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="p-1.5 bg-blue-600/10 text-blue-600 rounded-xl">
-            <Lightbulb className="w-5 h-5 fill-blue-600/10" />
-          </div>
-          <span className="font-bold text-xl tracking-tight text-zinc-900 dark:text-white">
-            idea<span className="text-blue-600">vault</span>
-          </span>
+        <Link href="/" className="text-xl font-black text-zinc-950 dark:text-white tracking-tight">
+          Idea<span className="text-blue-600">Vault</span>
         </Link>
 
-        
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-300">
-          <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-          <Link href="/ideas" className="hover:text-blue-600 transition-colors">Ideas</Link>
-          
-   
-          {user && (
+        <div className="flex items-center gap-6 text-sm font-semibold text-zinc-600 dark:text-zinc-300">
+          <Link href="/" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+            Home
+          </Link>
+          <Link href="/ideas" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+            Ideas
+          </Link>
+
+          {user ? (
             <>
-              <Link href="/add-idea" className="hover:text-blue-600 transition-colors flex items-center gap-1">
-                <PlusCircle size={14} /> Add Idea
+              <Link href="/add-idea" className="text-blue-600 hover:text-blue-500 transition-colors">
+                Add Idea
               </Link>
-              <Link href="/my-ideas" className="hover:text-blue-600 transition-colors flex items-center gap-1">
-                <Folder size={14} /> My Ideas
+              <Link href="/my-ideas" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+                My Ideas
               </Link>
-              <Link href="/my-interactions" className="hover:text-blue-600 transition-colors flex items-center gap-1">
-                <MessageSquare size={14} /> My Interactions
+              <Link href="/my-interactions" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+                My Interactions
+              </Link>
+              
+              <div className="flex items-center gap-3 pl-2 border-l border-zinc-200 dark:border-zinc-800">
+                <img 
+                  src={user?.image || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100"} 
+                  alt={user?.name} 
+                  className="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <button
+                  onClick={handleSignOut}
+                  className="bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white px-3 h-8 rounded-xl text-xs transition-colors font-bold"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="bg-zinc-950 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 px-4 h-9 flex items-center justify-center rounded-xl text-xs transition-colors font-bold shadow-sm"
+              >
+                Register
               </Link>
             </>
           )}
         </div>
 
-    
-        <div className="flex items-center gap-4">
-          {user ? (
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
-                <Avatar
-                  as="button"
-                  className="transition-transform w-8 h-8 text-sm border-2 border-blue-600"
-                  name={user.name || "User"}
-                  src={user.image || undefined}
-                />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="profile" className="h-14 gap-2" textValue="Signed in profile heading">
-                  <p className="font-semibold text-xs text-zinc-400">Signed in as</p>
-                  <p className="font-bold text-sm text-zinc-800 dark:text-zinc-200">{user.email}</p>
-                </DropdownItem>
-                <DropdownItem key="manage" startContent={<User size={16} />} textValue="Profile Management Link">
-                  <Link href="/profile" className="w-full h-full block">Profile Management</Link>
-                </DropdownItem>
-                <DropdownItem key="logout" color="danger" startContent={<LogOut size={16} />} onPress={handleSignOut} textValue="Sign out application trigger">
-                  Log Out
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          ) : (
-            <div className="hidden md:flex items-center gap-3">
-              <Link href="/login" className="text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-blue-600 transition-colors">
-                Login
-              </Link>
-              <Button as={Link} href="/register" color="primary" size="sm" className="font-bold rounded-xl shadow-lg shadow-blue-600/10">
-                Register
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
     </nav>
   );

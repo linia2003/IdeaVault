@@ -3,7 +3,9 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import { LucideLock, LucideMail, LucideEye, LucideEyeOff } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 
 function LoginContent() {
@@ -13,43 +15,39 @@ function LoginContent() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleEmailLogin = (e) => {
+  const handleEmailLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    setTimeout(() => {
-      // Assignment Requirement: Match Hardcoded Credentials
-      if (email === "la@gmail.com" && password === "Lalalala") {
-        toast.success("Welcome back to IdeaVault!");
-        
-        // Drop standard mock authorization token string into browser storage
-        document.cookie = "better-auth.session_token=mock_active_session_token; path=/";
-        
-        router.push(fromRoute);
-        
-        // Short timeout to let Next cache update cleanly
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
-      } else {
-        toast.error("Invalid email or password!");
-        setLoading(false);
+    try {
+      setLoading(true);
+      const { data, error } = await authClient.signIn.email({ email, password });
+      if (error) {
+        toast.error(error.message || "Invalid credentials.");
+        return;
       }
-    }, 500);
-  };
-
-  const handleGoogleLogin = () => {
-    toast.success("Connecting to Google Portal (Mock Auth Active)...");
-    document.cookie = "better-auth.session_token=mock_active_session_token; path=/";
-    setTimeout(() => {
+      toast.success("Welcome back to IdeaVault!");
       router.push(fromRoute);
-      window.location.reload();
-    }, 600);
+      router.refresh();
+    } catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+      await authClient.signIn.social({ provider: "google", callbackURL: fromRoute });
+    } catch (err) {
+      toast.error("Failed to connect Google login.");
+      setGoogleLoading(false);
+    }
+  };
+  
   return (
     <div className="w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8 mx-auto mt-12">
       <div className="flex flex-col gap-1 items-start mb-6">
