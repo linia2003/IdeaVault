@@ -14,13 +14,13 @@ export default function MyIdeasPage() {
   const [myIdeas, setMyIdeas] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  // Modal Control Reference States
+ 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedIdea, setSelectedIdea] = useState(null);
   const [processingAction, setProcessingAction] = useState(false);
 
-  // Form State parameters matching the Add Idea design structure exactly
+ 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Tech");
   const [shortDesc, setShortDesc] = useState("");
@@ -55,7 +55,7 @@ export default function MyIdeasPage() {
     pullUserIdeas();
   }, [loggedInUser, apiHost]);
 
-  // Open Update Overlay and Populate Form variables
+ 
   const triggerUpdateSetup = (idea) => {
     setSelectedIdea(idea);
     setTitle(idea.ideaTitle || "");
@@ -70,7 +70,7 @@ export default function MyIdeasPage() {
     setIsUpdateModalOpen(true);
   };
 
-  // Submit Update Put request
+
   const handleExecuteUpdate = async (e) => {
     e.preventDefault();
     if (!selectedIdea) return;
@@ -110,13 +110,13 @@ export default function MyIdeasPage() {
     }
   };
 
-  // Open Delete Confirmation Dialogue Box Interceptor
+
   const triggerDeleteSetup = (idea) => {
     setSelectedIdea(idea);
     setIsDeleteModalOpen(true);
   };
 
-  // Execute Delete operational request
+  
   const handleExecuteDelete = async () => {
     if (!selectedIdea) return;
     setProcessingAction(true);
@@ -163,7 +163,7 @@ export default function MyIdeasPage() {
   return (
     <div className="w-full max-w-3xl mx-auto py-8 animate-fadeIn space-y-6">
       
-      {/* Portfolio Title Card Container Frame */}
+   
       <div className="border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8">
         <div className="flex flex-col gap-1 items-start mb-6 border-b border-zinc-100 dark:border-zinc-800 pb-4 w-full">
           <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function MyIdeasPage() {
           </p>
         </div>
 
-        {/* Dashboard Grid Data Lists */}
+      
         {myIdeas.length === 0 ? (
           <div className="text-center py-12 text-xs text-zinc-400 font-bold border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
             You haven't added any startup concepts yet. Go to Add Idea to log your first record!
@@ -199,7 +199,7 @@ export default function MyIdeasPage() {
         )}
       </div>
 
-      {/* ─── FEATURES 1: UPDATE OVERLAY MODAL CANVAS ─── */}
+     
       {isUpdateModalOpen && (
         <div className="fixed inset-0 bg-zinc-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto animate-fadeIn">
           <div className="border border-zinc-200 dark:border-zinc-800 shadow-2xl bg-white dark:bg-zinc-900 rounded-3xl p-8 w-full max-w-2xl my-8 max-h-[85vh] overflow-y-auto no-scrollbar relative">
@@ -269,7 +269,7 @@ export default function MyIdeasPage() {
         </div>
       )}
 
-      {/* ─── FEATURES 2: DELETE CONFIRMATION INTERCEPT OVERLAY MODAL ─── */}
+  
       {isDeleteModalOpen && (
         <div className="fixed inset-0 bg-zinc-950/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="border border-zinc-200 dark:border-zinc-800 shadow-2xl bg-white dark:bg-zinc-900 rounded-3xl p-6 w-full max-w-sm text-center">

@@ -272,7 +272,7 @@ export default function IdeaDetailsPage() {
           <button 
             type="submit" 
             disabled={submittingComment || !newCommentInput.trim()} 
-            className="h-11 px-5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-xs font-bold rounded-xl transition-colors shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
+            className="h-11 px-5 bg-blue-500 hover:bg-blue-400 disabled:opacity-40 text-white text-xs font-semibold rounded-s transition-colors shrink-0 flex items-center justify-center gap-1.5"
           >
             Comment <Send className="w-3 h-3" />
           </button>
@@ -281,7 +281,7 @@ export default function IdeaDetailsPage() {
         <div className="flex flex-col gap-3">
           {commentsList.length === 0 ? (
             <div className="text-center py-6 text-xs text-zinc-400 font-bold border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
-              No comments posted yet.
+              Nobody commented yet.
             </div>
           ) : (
             commentsList.map((comment) => {

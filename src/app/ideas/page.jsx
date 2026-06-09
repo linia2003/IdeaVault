@@ -47,7 +47,7 @@ export default function IdeasPage() {
         setIdeasList(payloadData);
       } catch (err) {
         console.error("Feed loading operational drop:", err);
-        toast.error("Had an issue updating the ideas timeline grid. Let's try refreshing!");
+        toast.error(" Let's try refreshing!");
       } finally {
         setLoadingData(false);
       }
@@ -71,7 +71,7 @@ export default function IdeasPage() {
             Innovation Hub
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-xl">
-            Browse through community-submitted startup blueprints, apply market filters, and dive into full concepts to analyze validation feedback.
+            Browse through the submitted ideas and you can analyze the blueprint details to if you want.
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export default function IdeasPage() {
               Vault archive empty
             </p>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-              No matching concept documents found under your specific filter configurations. Try adjusting your keyword definitions.
+              No matching concept documents found under your specific filter configurations.
             </p>
           </div>
         ) : (
@@ -136,7 +136,7 @@ export default function IdeasPage() {
                 key={idea._id}
                 className="flex flex-col bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden hover:shadow-xl transition-all duration-300 group"
               >
-                {/* Concept Banner Frame */}
+                
                 <div className="relative h-44 w-full bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-100 dark:border-zinc-800 overflow-hidden">
                   {idea.imageUrl ? (
                     <img 
