@@ -2,13 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function Navbar() {
   const router = useRouter();
-  
+  const pathname = usePathname();
   
   const { data: session } = authClient.useSession();
   const user = session?.user;
@@ -33,22 +33,37 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6 text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-          <Link href="/" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+          <Link 
+            href="/" 
+            className={`transition-colors ${pathname === "/" ? "text-blue-600 font-bold" : "hover:text-zinc-950 dark:hover:text-white"}`}
+          >
             Home
           </Link>
-          <Link href="/ideas" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+          <Link 
+            href="/ideas" 
+            className={`transition-colors ${pathname === "/ideas" ? "text-blue-600 font-bold" : "hover:text-zinc-950 dark:hover:text-white"}`}
+          >
             Ideas
           </Link>
 
           {user ? (
             <>
-              <Link href="/add-idea" className="text-blue-600 hover:text-blue-500 transition-colors">
+              <Link 
+                href="/add-idea" 
+                className={`transition-colors ${pathname === "/add-idea" ? "text-blue-600 font-bold" : "hover:text-blue-500"}`}
+              >
                 Add Idea
               </Link>
-              <Link href="/my-ideas" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+              <Link 
+                href="/my-ideas" 
+                className={`transition-colors ${pathname === "/my-ideas" ? "text-blue-600 font-bold" : "hover:text-zinc-950 dark:hover:text-white"}`}
+              >
                 My Ideas
               </Link>
-              <Link href="/my-interactions" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+              <Link 
+                href="/my-interactions" 
+                className={`transition-colors ${pathname === "/my-interactions" ? "text-blue-600 font-bold" : "hover:text-zinc-950 dark:hover:text-white"}`}
+              >
                 My Interactions
               </Link>
               
@@ -69,7 +84,10 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="hover:text-zinc-950 dark:hover:text-white transition-colors">
+              <Link 
+                href="/login" 
+                className={`transition-colors ${pathname === "/login" ? "text-blue-600 font-bold" : "hover:text-zinc-950 dark:hover:text-white"}`}
+              >
                 Login
               </Link>
               <Link
