@@ -30,4 +30,3 @@ IdeaVault is a modern, community-driven platform designed for innovators, startu
 
 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
