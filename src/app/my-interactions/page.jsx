@@ -61,10 +61,8 @@ export default function MyInteractionsPage() {
 
   return (
     <div className="w-full max-w-3xl mx-auto py-8 animate-fadeIn space-y-6">
-      
-     
+      <title>My Interaction Registry | IdeaVault</title>
       <div className="border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8 sm:p-10">
-        
         
         <div className="flex flex-col gap-1 items-start mb-10 border-b border-zinc-100 dark:border-zinc-800 pb-5 w-full">
           <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white flex items-center gap-2">
@@ -76,7 +74,6 @@ export default function MyInteractionsPage() {
           </p>
         </div>
 
-      
         {interactions.length === 0 ? (
           <div className="text-center py-16 text-xs text-zinc-400 font-bold border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
             No interaction logs captured yet. Post comments on project ideas to register activity histories!
@@ -86,7 +83,6 @@ export default function MyInteractionsPage() {
             {interactions.map((item) => (
               <div key={item._id} className="space-y-5 animate-fadeIn">
                 
-              
                 <div className="flex items-center justify-between gap-6 border-b border-zinc-100 dark:border-zinc-800 pb-3">
                   <div className="space-y-0.5">
                     <h3 className="text-base font-black text-zinc-950 dark:text-white tracking-tight">{item.ideaTitle}</h3>
@@ -100,18 +96,15 @@ export default function MyInteractionsPage() {
                   </button>
                 </div>
 
-            
                 <div className="flex flex-col gap-4 pl-1">
                   {item.userComments.map((comment) => (
                     <div key={comment.commentId} className="flex flex-col gap-2 rounded-xl border border-zinc-200/60 dark:border-zinc-800/60 bg-transparent p-4">
-                      
                       
                       <div className="flex items-center gap-1.5 text-[10px] font-bold text-zinc-400 dark:text-zinc-500">
                         <Calendar className="w-3.5 h-3.5" />
                         {new Date(comment.createdAt).toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}
                       </div>
 
-                      
                       <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap pl-0.5">
                         {comment.commentText}
                       </p>

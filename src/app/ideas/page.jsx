@@ -25,18 +25,15 @@ export default function IdeasPage() {
     const fetchIdeas = async () => {
       setLoadingData(true);
       try {
-      
         let backendUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
         if (backendUrl.endsWith("/")) {
           backendUrl = backendUrl.slice(0, -1);
         }
         
-        
         let targetEndpoint = `${backendUrl}/ideas?search=${encodeURIComponent(searchQuery)}`;
         if (selectedCategory !== "All") {
           targetEndpoint += `&category=${encodeURIComponent(selectedCategory)}`;
         }
-
 
         const response = await fetch(targetEndpoint);
         if (!response.ok) {
@@ -47,13 +44,12 @@ export default function IdeasPage() {
         setIdeasList(payloadData);
       } catch (err) {
         console.error("Feed loading operational drop:", err);
-        toast.error(" Let's try refreshing!");
+        toast.error("Had an issue updating the ideas timeline grid.");
       } finally {
         setLoadingData(false);
       }
     };
 
-    
     const debounceTimer = setTimeout(() => {
       fetchIdeas();
     }, 350);
@@ -63,19 +59,18 @@ export default function IdeasPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f0f11] text-[#1c1c1f] dark:text-[#ececed] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-150">
+      <title>Innovation Hub | IdeaVault</title>
       <div className="max-w-7xl mx-auto">
         
-       
         <div className="mb-10 text-center sm:text-left">
           <h1 className="text-3xl font-black tracking-tight md:text-4xl text-zinc-950 dark:text-white">
             Innovation Hub
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-xl">
-            Browse through the submitted ideas and you can analyze the blueprint details to if you want.
+            Browse through the submitted ideas and you can analyze the blueprint details if you want.
           </p>
         </div>
 
-        
         <div className="flex flex-col md:flex-row gap-4 mb-10 items-center justify-between bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs">
           <div className="relative w-full md:max-w-xs">
             <span className="absolute inset-y-0 left-3.5 flex items-center text-zinc-400">
@@ -110,7 +105,6 @@ export default function IdeasPage() {
           </div>
         </div>
 
-        
         {loadingData ? (
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-3">
             <Loader2 className="w-7 h-7 animate-spin text-indigo-600" />
@@ -128,15 +122,12 @@ export default function IdeasPage() {
             </p>
           </div>
         ) : (
-          
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {ideasList.map((idea) => (
               <div 
                 key={idea._id}
                 className="flex flex-col bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden hover:shadow-xl transition-all duration-300 group"
               >
-                
                 <div className="relative h-44 w-full bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-100 dark:border-zinc-800 overflow-hidden">
                   {idea.imageUrl ? (
                     <img 
@@ -159,7 +150,6 @@ export default function IdeasPage() {
                   </span>
                 </div>
 
-               
                 <div className="p-6 flex-1 flex flex-col justify-between gap-5">
                   <div>
                     <h3 className="text-base font-black text-zinc-950 dark:text-white line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
@@ -170,7 +160,6 @@ export default function IdeasPage() {
                     </p>
                   </div>
 
-                  
                   <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 grid grid-cols-2 gap-y-3 text-[11px]">
                     <div className="flex flex-col">
                       <span className="text-zinc-400 font-bold uppercase tracking-wider text-[9px]">Market Segment</span>
@@ -186,7 +175,6 @@ export default function IdeasPage() {
                     </div>
                   </div>
 
-                  
                   <div className="mt-1">
                     <Link
                       href={`/ideas/${idea._id}`}

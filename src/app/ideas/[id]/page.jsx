@@ -38,6 +38,10 @@ export default function IdeaDetailsPage() {
         const ideaPayload = await ideaRes.json();
         setIdeaData(ideaPayload);
 
+        if (ideaPayload?.ideaTitle) {
+          document.title = `${ideaPayload.ideaTitle} - Specs Canvas | IdeaVault`;
+        }
+
         try {
           const commentsRes = await fetch(`${baseHost}/comments/${sanitizedId}`);
           if (commentsRes.ok) {
@@ -167,7 +171,6 @@ export default function IdeaDetailsPage() {
         <ArrowLeft className="w-4 h-4" /> Return to Hub
       </button>
 
-    
       <div className="border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8">
         
         <div className="flex flex-col gap-1 items-start mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-4">
@@ -250,7 +253,6 @@ export default function IdeaDetailsPage() {
         </div>
       </div>
 
-    
       <div className="border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8 space-y-6">
         
         <div className="border-b border-zinc-100 dark:border-zinc-800 pb-3">
@@ -259,7 +261,6 @@ export default function IdeaDetailsPage() {
           </h3>
         </div>
 
-       
         <form onSubmit={handleAddComment} className="flex gap-2">
           <input
             type="text"
@@ -272,7 +273,7 @@ export default function IdeaDetailsPage() {
           <button 
             type="submit" 
             disabled={submittingComment || !newCommentInput.trim()} 
-            className="h-11 px-5 bg-blue-500 hover:bg-blue-400 disabled:opacity-40 text-white text-xs font-semibold rounded-s transition-colors shrink-0 flex items-center justify-center gap-1.5"
+            className="h-11 px-5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-xs font-bold rounded-xl transition-colors shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
           >
             Comment <Send className="w-3 h-3" />
           </button>
@@ -291,7 +292,7 @@ export default function IdeaDetailsPage() {
               return (
                 <div key={comment._id} className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 flex gap-4 items-start justify-between group transition-all">
                   <div className="flex-1 min-w-0 space-y-1">
-                   
+                    
                     <div className="flex items-center gap-2 flex-wrap text-xs">
                       <span className="font-black text-zinc-900 dark:text-white">{comment.userName}</span>
                       {isAuthor && (
@@ -302,7 +303,6 @@ export default function IdeaDetailsPage() {
                       </span>
                     </div>
 
-                    
                     {isEditing ? (
                       <div className="flex gap-2 items-center mt-2 bg-white dark:bg-zinc-900 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
                         <input
@@ -315,13 +315,11 @@ export default function IdeaDetailsPage() {
                         <button onClick={() => setActiveEditingId(null)} className="p-1 bg-zinc-200 dark:bg-zinc-800 text-zinc-500 rounded-md cursor-pointer"><X className="w-3.5 h-3.5" /></button>
                       </div>
                     ) : (
-                      
                       <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap pt-0.5">{comment.commentText}</p>
                     )}
 
                   </div>
 
-                
                   {isAuthor && !isEditing && (
                     <div className="flex items-center gap-0.5 shrink-0 transition-opacity">
                       <button

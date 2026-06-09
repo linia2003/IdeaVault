@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LucideLightbulb, LucideCoins, LucideTag, LucideImage, LucideLayers, ShieldAlert } from "lucide-react";
+import { LucideLightbulb, LucideCoins, LucideTag, LucideImage, LucideLayers, ShieldAlert, Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client"; 
 import toast from "react-hot-toast";
 
@@ -10,7 +10,6 @@ export default function AddIdeaPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  
   const { data: activeSession, isPending: evaluatingSession } = authClient.useSession();
   const loggedInUser = activeSession?.user;
 
@@ -27,7 +26,6 @@ export default function AddIdeaPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     
     if (!loggedInUser?.email) {
       toast.error("Your session authorization expired. Please log in again.");
@@ -74,16 +72,15 @@ export default function AddIdeaPage() {
     }
   };
 
- 
   if (evaluatingSession) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-2 bg-white dark:bg-zinc-900">
-        <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest animate-pulse">Confirming Profile Access...</span>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3 bg-white dark:bg-zinc-900">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <span className="text-[10px] font-black tracking-widest text-zinc-400 uppercase animate-pulse">Confirming Profile Access...</span>
       </div>
     );
   }
 
-  
   if (!loggedInUser) {
     return (
       <div className="w-full max-w-3xl mx-auto py-8">
@@ -100,6 +97,7 @@ export default function AddIdeaPage() {
 
   return (
     <div className="w-full max-w-3xl mx-auto py-8 animate-fadeIn">
+      <title>Publish Concept Blueprint | IdeaVault</title>
       <div className="border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-zinc-900 rounded-3xl p-8">
         
         <div className="flex flex-col gap-1 items-start mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-4">
