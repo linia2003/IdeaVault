@@ -1,12 +1,12 @@
-# IdeaVault 💡
+# IdeaVault 
 
 IdeaVault is a modern, community-driven platform designed for innovators, startup creators, and tech enthusiasts to publish, discover, and refine business concepts. It serves as a digital blueprint repository where creators can share system architectures and get feedback from peers to validate their concepts.
 
-🌍 **Live Application URL:** 
+ **Live Application URL:** 
 
 ---
 
-## 🔥 Key Features
+##  Key Features
 
 * **Dynamic Innovation Hub:** A fluid 3-column discovery grid that includes case-insensitive semantic search queries and instant category filters to navigate through ecosystem blueprints effortlessly.
 * **Secure Session Protection:** Complete private route infrastructure backed by robust JWT verification and session states. Includes standard Email/Password matching as well as social Google OAuth verification.
@@ -16,7 +16,7 @@ IdeaVault is a modern, community-driven platform designed for innovators, startu
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 **Frontend Architecture:**
 * Next.js (App Router)
