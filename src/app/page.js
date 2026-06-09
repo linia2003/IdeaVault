@@ -4,6 +4,8 @@ import Banner from "./components/banner";
 import { Lightbulb, MessageSquare, Tag, LayoutGrid, CheckCircle, Code, Briefcase } from "lucide-react";
 
 
+export const dynamic = "force-dynamic";
+
 async function getTrendingIdeas() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/ideas/trending`, {
@@ -27,10 +29,8 @@ export default async function HomePage() {
   return (
     <div className="w-full py-2">
       
-     
       <Banner />
 
-     
       <section className="mb-20">
         <div className="text-center max-w-xl mx-auto mb-12">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">How IdeaVault Works</h2>
@@ -55,7 +55,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      
       <section className="mb-20">
         <div className="flex items-center justify-between gap-4 mb-10">
           <div>
@@ -120,7 +119,6 @@ export default async function HomePage() {
         )}
       </section>
 
-     
       <section className="mb-8">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-10 -translate-y-10 pointer-events-none">
