@@ -12,7 +12,7 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  // Gracefully handles route tracking redirection or defaults to baseline root
+  
   const fromRoute = searchParams.get("callbackUrl") || "/";
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +47,7 @@ function LoginContent() {
 
   const handleGoogleLogin = async () => {
     try {
-      // Social redirect matrix handles route state tracking directly
+      
       await authClient.signIn.social({ 
         provider: "google", 
         callbackURL: fromRoute 
@@ -71,7 +71,7 @@ function LoginContent() {
 
       <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
         
-        {/* Email Form Row */}
+        
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Email Address</label>
           <div className="relative w-full flex items-center">
@@ -87,7 +87,7 @@ function LoginContent() {
           </div>
         </div>
         
-        {/* Password Form Row */}
+        
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Password</label>
           <div className="relative w-full flex items-center">
@@ -109,7 +109,7 @@ function LoginContent() {
             </button>
           </div>
           
-          {/* Mock Assignment Behavior Constraint */}
+          
           <div className="flex justify-end mt-0.5 px-1">
             <button 
               type="button" 
@@ -130,7 +130,7 @@ function LoginContent() {
         </button>
       </form>
 
-      {/* Modern Horizontal Divider Pattern */}
+      
       <div className="flex items-center gap-2 my-6">
         <div className="flex-grow h-[1px] bg-zinc-200 dark:bg-zinc-800" />
         <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider whitespace-nowrap">

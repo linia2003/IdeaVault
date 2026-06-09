@@ -73,11 +73,11 @@ export default function AddIdeaPage() {
         
         <div className="flex flex-col gap-1 items-start mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-4">
           <h2 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-white flex items-center gap-2">
-            <LucideLightbulb className="text-yellow-500 w-6 h-6" />
-            Submit Startup Concept
+            <LucideLightbulb className="text-red-800 w-6 h-6" />
+             Startup Concept
           </h2>
           <p className="text-zinc-500 text-xs">
-            Publish your innovative concept, define target segments, and map out requirements.
+            Publish your innovative ideas, define target segments, and explain the requirements.
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function AddIdeaPage() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors appearance-none cursor-pointer"
+                  className="w-full h-11 pl-11 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-900 text-sm focus:outline-none focus:border-blue-500 text-zinc-900 dark:text-white transition-colors appearance-none cursor-pointer"
                 >
                   <option value="Tech">Tech</option>
                   <option value="Health">Health</option>
@@ -177,7 +177,7 @@ export default function AddIdeaPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Estimated Budget (USD - Optional)</label>
+              <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Estimated Budget (Taka)</label>
               <div className="relative w-full flex items-center">
                 <LucideCoins className="absolute left-4 text-zinc-400 w-4 h-4 pointer-events-none" />
                 <input
@@ -216,7 +216,7 @@ export default function AddIdeaPage() {
             />
           </div>
 
-          {/* Row 7: Proposed Solution */}
+         
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Proposed Solution</label>
             <textarea
@@ -229,7 +229,7 @@ export default function AddIdeaPage() {
             />
           </div>
 
-          {/* Submit Action Button */}
+         
           <button
             type="submit"
             disabled={loading}

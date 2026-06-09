@@ -12,6 +12,6 @@ export async function proxy(request) {
 }
 
 export const config = {
-  // Target route matchers matched for IdeaVault requirements
+  
   matcher: ["/my-ideas", "/add-idea", "/my-interactions"],
 };

@@ -1,4 +1,4 @@
-"usejsx"
+"use client";
 import React, { useState, useEffect } from "react";
 import { Link } from "@heroui/react";
 import toast from "react-hot-toast";
@@ -49,7 +49,7 @@ export default function IdeasPage() {
       }
     };
 
-    // Humanized debounce mechanism to prevent endpoint hammer on keystroke
+    
     const inputDelayTimer = setTimeout(() => {
       fetchIdeas();
     }, 400);
@@ -61,7 +61,7 @@ export default function IdeasPage() {
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f0f11] text-[#1c1c1f] dark:text-[#ececed] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         
-        {/* Page Head */}
+       
         <div className="mb-10 text-center sm:text-left">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl text-[#0f0f11] dark:text-white">
             Innovation Sandbox
@@ -132,7 +132,7 @@ export default function IdeasPage() {
                 key={idea._id}
                 className="flex flex-col bg-white dark:bg-[#18181c] rounded-xl border border-[#e4e4e7] dark:border-[#27272a] overflow-hidden hover:shadow-md hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-all duration-200 group"
               >
-                {/* Accent Card Header Banner */}
+               
                 <div className="relative h-44 w-full bg-[#f4f4f5] dark:bg-[#27272a] overflow-hidden border-b border-[#e4e4e7] dark:border-[#27272a]">
                   {idea.imageUrl ? (
                     <img 

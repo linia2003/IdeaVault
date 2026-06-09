@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 export default function Navbar() {
   const router = useRouter();
   
-  // Real reactive session hook from the blueprint pattern
+  
   const { data: session } = authClient.useSession();
   const user = session?.user;
 

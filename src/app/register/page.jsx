@@ -12,7 +12,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  // Clean states for direct component tracking
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
@@ -21,7 +21,7 @@ export default function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Enforcing assignment parameters precisely before striking the authClient
+    
     if (password.length < 6) { 
       toast.error("Password standard unmet: Minimum 6 characters required."); 
       return; 
@@ -38,10 +38,10 @@ export default function RegisterPage() {
     try {
       setLoading(true);
       const { data, error } = await authClient.signUp.email({
-        email: email.trim(),
+        email: email,
         password: password,
-        name: name.trim(),
-        image: photoUrl.trim() || undefined,
+        name: name,
+        image: photoUrl || undefined,
       });
 
       if (error) {
@@ -74,13 +74,14 @@ export default function RegisterPage() {
 
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
           
-          {/* Full Name */}
+          
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Full Name</label>
             <div className="relative w-full flex items-center">
               <LucideUser className="absolute left-4 text-zinc-400 w-4 h-4 pointer-events-none" />
               <input
                 type="text"
+                name="name" 
                 required
                 placeholder="Mahbuba Rahman"
                 value={name}
@@ -90,13 +91,14 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Email */}
+          
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Email Address</label>
             <div className="relative w-full flex items-center">
               <LucideMail className="absolute left-4 text-zinc-400 w-4 h-4 pointer-events-none" />
               <input
                 type="email"
+                name="email"
                 required
                 placeholder="name@domain.com"
                 value={email}
@@ -106,13 +108,14 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Photo URL */}
+          
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Photo URL</label>
             <div className="relative w-full flex items-center">
               <LucideImage className="absolute left-4 text-zinc-400 w-4 h-4 pointer-events-none" />
               <input
                 type="url"
+                name="photoUrl"
                 required
                 placeholder="https://images.unsplash.com/...image.jpg"
                 value={photoUrl}
@@ -122,13 +125,14 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Password */}
+         
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 px-1">Password</label>
             <div className="relative w-full flex items-center">
               <LucideLock className="absolute left-4 text-zinc-400 w-4 h-4 pointer-events-none" />
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 required
                 placeholder="••••••••"
                 value={password}
