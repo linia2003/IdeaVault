@@ -1,8 +1,24 @@
-/** @type {import('next').NextConfig} */
+/** @type {import('next').Next} */
 const nextConfig = {
-  serverExternalPackages: ["mongodb"],
-  
-  distDir: "build-cache-vault-v2",
+  output: 'standalone',
+  experimental: {
+    serverComponentsExternalPackages: ['@better-auth/kysely-adapter', 'kysely'],
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**',
+        search: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+      }
+    ],
+  },
 };
 
 export default nextConfig;
